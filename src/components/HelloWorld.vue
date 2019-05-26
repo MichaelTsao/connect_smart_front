@@ -1,144 +1,241 @@
 <template>
-  <v-container>
-    <v-layout
-      text-xs-center
-      wrap
-    >
-      <v-flex xs12>
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        ></v-img>
-      </v-flex>
+    <div>
+        <v-toolbar color="white" flat>
+            <v-toolbar-title>我的圈子</v-toolbar-title>
+            <v-divider
+                    class="mx-2"
+                    inset
+                    vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog max-width="500px" v-model="dialog">
+                <template v-slot:activator="{ on }">
+                    <v-btn class="mb-2" color="primary" dark v-on="on">New Item</v-btn>
+                </template>
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ formTitle }}</span>
+                    </v-card-title>
 
-      <v-flex mb-4>
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Michael's Vuetify
-        </h1>
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a href="https://community.vuetifyjs.com" target="_blank">Discord Community</a>
-        </p>
-      </v-flex>
+                    <v-card-text>
+                        <v-container grid-list-md>
+                            <v-layout wrap>
+                                <v-flex md4 sm6 xs12>
+                                    <v-text-field label="Dessert name" v-model="editedItem.name"></v-text-field>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-text-field label="Calories" v-model="editedItem.calories"></v-text-field>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-text-field label="Fat (g)" v-model="editedItem.fat"></v-text-field>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-text-field label="Carbs (g)" v-model="editedItem.carbs"></v-text-field>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-text-field label="Protein (g)" v-model="editedItem.protein"></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </v-card-text>
 
-      <v-flex
-        mb-5
-        xs12
-      >
-        <h2 class="headline font-weight-bold mb-3">What's next?</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Important Links</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-
-      <v-flex
-        xs12
-        mb-5
-      >
-        <h2 class="headline font-weight-bold mb-3">Ecosystem</h2>
-
-        <v-layout justify-center>
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-layout>
-      </v-flex>
-    </v-layout>
-  </v-container>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn @click="close" color="blue darken-1" flat>Cancel</v-btn>
+                        <v-btn @click="save" color="blue darken-1" flat>Save</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-toolbar>
+        <v-data-table
+                :headers="headers"
+                :items="desserts"
+                class="elevation-1"
+        >
+            <template v-slot:items="props">
+                <td>{{ props.item.name }}</td>
+                <td class="text-xs-right">{{ props.item.calories }}</td>
+                <td class="text-xs-right">{{ props.item.fat }}</td>
+                <td class="text-xs-right">{{ props.item.carbs }}</td>
+                <td class="text-xs-right">{{ props.item.protein }}</td>
+                <td class="justify-center layout px-0">
+                    <v-icon
+                            @click="editItem(props.item)"
+                            class="mr-2"
+                            small
+                    >
+                        edit
+                    </v-icon>
+                    <v-icon
+                            @click="deleteItem(props.item)"
+                            small
+                    >
+                        delete
+                    </v-icon>
+                </td>
+            </template>
+            <template v-slot:no-data>
+                <v-btn @click="initialize" color="primary">Reset</v-btn>
+            </template>
+        </v-data-table>
+    </div>
 </template>
 
 <script>
   export default {
     data: () => ({
-      ecosystem: [
+        dialog: false,
+        headers: [
         {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader'
+            text: 'Dessert (100g serving)',
+            align: 'left',
+            sortable: false,
+            value: 'name'
         },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify'
+            {text: 'Calories', value: 'calories'},
+            {text: 'Fat (g)', value: 'fat'},
+            {text: 'Carbs (g)', value: 'carbs'},
+            {text: 'Protein (g)', value: 'protein'},
+            {text: 'Actions', value: 'name', sortable: false}
+        ],
+        desserts: [],
+        editedIndex: -1,
+        editedItem: {
+            name: '',
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
         },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify'
+        defaultItem: {
+            name: '',
+            calories: 0,
+            fat: 0,
+            carbs: 0,
+            protein: 0
         }
-      ],
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com'
-        },
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com'
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuetifyjs.com'
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs'
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify'
-        }
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com/components/api-explorer'
-        },
-        {
-          text: 'Select a layout',
-          href: 'https://vuetifyjs.com/layout/pre-defined'
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
-        }
+    }),
 
-      ]
-    })
+      computed: {
+          formTitle() {
+              return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+          }
+      },
+
+      watch: {
+          dialog(val) {
+              val || this.close()
+          }
+      },
+
+      created() {
+          this.initialize()
+      },
+
+      methods: {
+          initialize() {
+              this.desserts = [
+                  {
+                      name: 'Frozen Yogurt',
+                      calories: 159,
+                      fat: 6.0,
+                      carbs: 24,
+                      protein: 4.0
+                  },
+                  {
+                      name: 'Ice cream sandwich',
+                      calories: 237,
+                      fat: 9.0,
+                      carbs: 37,
+                      protein: 4.3
+                  },
+                  {
+                      name: 'Eclair',
+                      calories: 262,
+                      fat: 16.0,
+                      carbs: 23,
+                      protein: 6.0
+                  },
+                  {
+                      name: 'Cupcake',
+                      calories: 1305,
+                      fat: 3.7,
+                      carbs: 67,
+                      protein: 4.3
+                  },
+                  {
+                      name: 'Gingerbread',
+                      calories: 356,
+                      fat: 16.0,
+                      carbs: 49,
+                      protein: 3.9
+                  },
+                  {
+                      name: 'Jelly bean',
+                      calories: 375,
+                      fat: 0.0,
+                      carbs: 94,
+                      protein: 0.0
+                  },
+                  {
+                      name: 'Lollipop',
+                      calories: 392,
+                      fat: 0.2,
+                      carbs: 98,
+                      protein: 0
+                  },
+                  {
+                      name: 'Honeycomb',
+                      calories: 408,
+                      fat: 3.2,
+                      carbs: 87,
+                      protein: 6.5
+                  },
+                  {
+                      name: 'Donut',
+                      calories: 452,
+                      fat: 25.0,
+                      carbs: 51,
+                      protein: 4.9
+                  },
+                  {
+                      name: 'KitKat',
+                      calories: 518,
+                      fat: 26.0,
+                      carbs: 65,
+                      protein: 7
+                  }
+              ]
+          },
+
+          editItem(item) {
+              this.editedIndex = this.desserts.indexOf(item)
+              this.editedItem = Object.assign({}, item)
+              this.dialog = true
+          },
+
+          deleteItem(item) {
+              const index = this.desserts.indexOf(item)
+              confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
+          },
+
+          close() {
+              this.dialog = false
+              setTimeout(() => {
+                  this.editedItem = Object.assign({}, this.defaultItem)
+                  this.editedIndex = -1
+              }, 300)
+          },
+
+          save() {
+              if (this.editedIndex > -1) {
+                  Object.assign(this.desserts[this.editedIndex], this.editedItem)
+              } else {
+                  this.desserts.push(this.editedItem)
+              }
+              this.close()
+          }
+      }
   }
 </script>
 
