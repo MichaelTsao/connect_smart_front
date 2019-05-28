@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
     <div>
         <v-toolbar color="white" flat>
             <v-toolbar-title>我的圈子</v-toolbar-title>
@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
             <v-dialog max-width="500px" v-model="dialog">
                 <template v-slot:activator="{ on }">
-                    <v-btn class="mb-2" color="primary" dark v-on="on">New Item</v-btn>
+                    <v-btn class="mb-2" color="primary" dark v-on="on">新朋友</v-btn>
                 </template>
                 <v-card>
                     <v-card-title>
@@ -47,6 +47,7 @@
                 </v-card>
             </v-dialog>
         </v-toolbar>
+
         <v-data-table
                 :headers="headers"
                 :items="desserts"
@@ -87,9 +88,9 @@
             dialog: false,
             headers: [
                 {
-                    text: 'Dessert (100g serving)',
+                    text: '名字',
                     align: 'left',
-                    sortable: false,
+                    // sortable: false,
                     value: 'name'
                 },
                 {text: 'Calories', value: 'calories', align: 'right'},
