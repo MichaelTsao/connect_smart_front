@@ -7,6 +7,11 @@
                     inset
                     vertical
             ></v-divider>
+            <v-flex md2 sm2 xs3>
+                <v-text-field
+                        label="姓名"
+                ></v-text-field>
+            </v-flex>
             <v-spacer></v-spacer>
             <v-dialog max-width="500px" v-model="dialog">
                 <template v-slot:activator="{ on }">
@@ -93,11 +98,11 @@
                     // sortable: false,
                     value: 'name'
                 },
-                {text: 'Calories', value: 'calories', align: 'right'},
-                {text: 'Fat (g)', value: 'fat', align: 'right'},
-                {text: 'Carbs (g)', value: 'carbs', align: 'right'},
-                {text: 'Protein (g)', value: 'protein', align: 'right'},
-                {text: 'Actions', value: 'name', sortable: false, align: 'center'}
+                {text: '人脉强度', value: 'calories', align: 'right'},
+                {text: '熟识度', value: 'fat', align: 'right'},
+                {text: '影响力', value: 'carbs', align: 'right'},
+                {text: '行业', value: 'protein', align: 'right'},
+                {text: '操作', value: 'name', sortable: false, align: 'center'}
             ],
             desserts: [],
             editedIndex: -1,
