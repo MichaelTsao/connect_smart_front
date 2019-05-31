@@ -7,9 +7,9 @@
                     inset
                     vertical
             ></v-divider>
-            <v-flex md2 sm2 xs3>
+            <v-flex class="mt-3" md1 sm2 xs3>
                 <v-text-field
-                        label="姓名"
+                        label="名字"
                 ></v-text-field>
             </v-flex>
             <v-spacer></v-spacer>
