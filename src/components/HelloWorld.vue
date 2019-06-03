@@ -30,7 +30,7 @@
                                     <v-text-field label="名字" v-model="editedItem.name"></v-text-field>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="Calories" v-model="editedItem.calories"></v-text-field>
+                                    <v-text-field label="人脉强度" v-model="editedItem.type"></v-text-field>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
                                     <v-text-field label="Fat (g)" v-model="editedItem.fat"></v-text-field>
@@ -61,9 +61,9 @@
         >
             <template v-slot:items="props">
                 <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.calories }}</td>
-                <td class="text-xs-right">{{ props.item.fat }}</td>
-                <td class="text-xs-right">{{ props.item.carbs }}</td>
+                <td class="text-xs-right">{{ props.item.type }}</td>
+                <td class="text-xs-right">{{ props.item.familiar }}</td>
+                <td class="text-xs-right">{{ props.item.force }}</td>
                 <td class="text-xs-right">{{ props.item.company }}</td>
                 <td class="justify-center layout px-0">
                     <v-icon
@@ -99,11 +99,11 @@
                     // sortable: false,
                     value: 'name'
                 },
-                {text: '人脉强度', value: 'calories', align: 'right'},
-                {text: '熟识度', value: 'fat', align: 'right'},
-                {text: '影响力', value: 'carbs', align: 'right'},
+                {text: '人脉强度', value: 'type', align: 'right'},
+                {text: '熟识度', value: 'familiar', align: 'right'},
+                {text: '影响力', value: 'force', align: 'right'},
                 {text: '公司', value: 'company', align: 'right'},
-                {text: '操作', value: 'name', sortable: false, align: 'center'}
+                {text: '操作', value: 'action', sortable: false, align: 'center'}
             ],
             friends: [],
             editedIndex: -1,
@@ -119,7 +119,7 @@
                 calories: 0,
                 fat: 0,
                 carbs: 0,
-                company: 0
+                company: ""
             }
         }),
 
@@ -147,7 +147,7 @@
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
-                        console.log(response.data);
+                        console.log(response);
                     })
                     .catch(function (error) {
                         // handle error
