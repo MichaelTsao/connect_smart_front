@@ -7,8 +7,9 @@
                     inset
                     vertical
             ></v-divider>
-            <v-flex class="mt-3" md1 sm2 xs3>
+            <v-flex class="mt-3 ml-2" md1 sm2 xs3>
                 <v-text-field
+                        clearable
                         label="名字"
                 ></v-text-field>
             </v-flex>
@@ -26,7 +27,7 @@
                         <v-container grid-list-md>
                             <v-layout wrap>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="Dessert name" v-model="editedItem.name"></v-text-field>
+                                    <v-text-field label="名字" v-model="editedItem.name"></v-text-field>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
                                     <v-text-field label="Calories" v-model="editedItem.calories"></v-text-field>
@@ -124,7 +125,7 @@
 
         computed: {
             formTitle() {
-                return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+                return this.editedIndex === -1 ? '新朋友' : '老朋友'
             }
         },
 
