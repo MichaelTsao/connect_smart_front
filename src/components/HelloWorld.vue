@@ -30,16 +30,28 @@
                                     <v-text-field label="名字" v-model="editedItem.name"></v-text-field>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="人脉强度" v-model="editedItem.type"></v-text-field>
+                                    <v-select
+                                            :items="types"
+                                            label="人脉强度"
+                                            v-model="editedItem.type"
+                                    ></v-select>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="Fat (g)" v-model="editedItem.fat"></v-text-field>
+                                    <v-select
+                                            :items="familiars"
+                                            label="熟识度"
+                                            v-model="editedItem.familiar"
+                                    ></v-select>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="Carbs (g)" v-model="editedItem.carbs"></v-text-field>
+                                    <v-select
+                                            :items="forces"
+                                            label="影响力"
+                                            v-model="editedItem.force"
+                                    ></v-select>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-text-field label="Protein (g)" v-model="editedItem.company"></v-text-field>
+                                    <v-text-field label="公司" v-model="editedItem.company"></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -47,8 +59,8 @@
 
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn @click="close" color="blue darken-1" flat>Cancel</v-btn>
-                        <v-btn @click="save" color="blue darken-1" flat>Save</v-btn>
+                        <v-btn @click="close" color="blue darken-1" flat>关闭</v-btn>
+                        <v-btn @click="save" color="blue darken-1" flat>保存</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-dialog>
@@ -106,19 +118,22 @@
                 {text: '操作', value: 'action', sortable: false, align: 'center'}
             ],
             friends: [],
+            types: ['密友', '好友', '朋友'],
+            familiars: ['熟', '一般', '生'],
+            forces: ['强', '中', '弱'],
             editedIndex: -1,
             editedItem: {
                 name: '',
-                calories: 0,
-                fat: 0,
-                carbs: 0,
+                type: 0,
+                familiar: 0,
+                force: 0,
                 company: 0
             },
             defaultItem: {
                 name: '',
-                calories: 0,
-                fat: 0,
-                carbs: 0,
+                type: 0,
+                familiar: 0,
+                force: 0,
                 company: ""
             }
         }),
