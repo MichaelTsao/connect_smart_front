@@ -135,7 +135,8 @@
                 familiar: 0,
                 force: 0,
                 company: ""
-            }
+            },
+            api_url: "http://cs.cx"
         }),
 
         computed: {
@@ -158,7 +159,7 @@
             initialize() {
                 var that = this;
                 const http = require('axios');
-                http.get('http://cs.cx/friends?access-token=100-token')
+                http.get(this.api_url + '/friends?access-token=100-token')
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
@@ -171,29 +172,65 @@
             },
 
             editItem(item) {
-                this.editedIndex = this.friends.indexOf(item)
-                this.editedItem = Object.assign({}, item)
+                this.editedIndex = this.friends.indexOf(item);
+                this.editedItem = Object.assign({}, item);
                 this.dialog = true
             },
 
             deleteItem(item) {
-                const index = this.friends.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.friends.splice(index, 1)
+                const index = this.friends.indexOf(item);
+                if (confirm('确定删除此好友?')) {
+                    const http = require('axios');
+                    http.delete(this.api_url + '/friends/' + this.friends[index]['_id'] + '?access-token=100-token')
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+
+                    this.friends.splice(index, 1)
+                }
             },
 
             close() {
                 this.dialog = false
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
                 }, 300)
             },
 
             save() {
+                var that = this;
+                const http = require('axios');
                 if (this.editedIndex > -1) {
-                    Object.assign(this.friends[this.editedIndex], this.editedItem)
+                    Object.assign(this.friends[this.editedIndex], this.editedItem);
+
+                    http.put(this.api_url + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+
                 } else {
-                    this.friends.push(this.editedItem)
+                    http.post(this.api_url + '/friends?access-token=100-token', this.editedItem)
+                        .then(function (response) {
+                            // handle success
+                            that.friends.push(response.data);
+
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
                 }
                 this.close()
             }
