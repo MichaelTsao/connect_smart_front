@@ -73,9 +73,9 @@
         >
             <template v-slot:items="props">
                 <td>{{ props.item.name }}</td>
-                <td class="text-xs-right">{{ props.item.type }}</td>
-                <td class="text-xs-right">{{ props.item.familiar }}</td>
-                <td class="text-xs-right">{{ props.item.force }}</td>
+                <td class="text-xs-right">{{ typeDict[props.item.type] }}</td>
+                <td class="text-xs-right">{{ familiarDict[props.item.familiar] }}</td>
+                <td class="text-xs-right">{{ forceDict[props.item.force] }}</td>
                 <td class="text-xs-right">{{ props.item.company }}</td>
                 <td class="justify-center layout px-0">
                     <v-icon
@@ -118,16 +118,16 @@
                 {text: '操作', value: 'action', sortable: false, align: 'center'}
             ],
             friends: [],
-            types: ['密友', '好友', '朋友'],
-            familiars: ['熟', '一般', '生'],
-            forces: ['强', '中', '弱'],
+            types: [{value: 3, text: '密友'}, {value: 2, text: '好友'}, {value: 1, text: '朋友'}],
+            familiars: [{value: 3, text: '熟'}, {value: 2, text: '一般'}, {value: 1, text: '生'}],
+            forces: [{value: 3, text: '强'}, {value: 2, text: '中'}, {value: 1, text: '弱'}],
             editedIndex: -1,
             editedItem: {
                 name: '',
                 type: 0,
                 familiar: 0,
                 force: 0,
-                company: 0
+                company: ''
             },
             defaultItem: {
                 name: '',
@@ -142,6 +142,18 @@
         computed: {
             formTitle() {
                 return this.editedIndex === -1 ? '新朋友' : '老朋友'
+            },
+
+            typeDict() {
+                return this.selectToDict(this.types)
+            },
+
+            familiarDict() {
+                return this.selectToDict(this.familiars)
+            },
+
+            forceDict() {
+                return this.selectToDict(this.forces)
             }
         },
 
@@ -156,6 +168,15 @@
         },
 
         methods: {
+            selectToDict(select) {
+                var dict = {0: '未知'};
+                var key;
+                for (key in select) {
+                    dict[select[key]['value']] = select[key]['text']
+                }
+                return dict;
+            },
+
             initialize() {
                 var that = this;
                 const http = require('axios');
