@@ -9,9 +9,9 @@
             ></v-divider>
             <v-flex class="mt-3 ml-2" md1 sm2 xs3>
                 <v-text-field
+                        @change="getItems"
                         clearable
                         label="名字"
-                        @change="getItems"
                         v-model="searchName"
                 ></v-text-field>
             </v-flex>

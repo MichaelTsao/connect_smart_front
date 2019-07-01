@@ -7,18 +7,18 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+        <Friends/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-    import HelloWorld from './components/HelloWorld'
+    import Friends from './components/Friends'
 
     export default {
   name: 'App',
   components: {
-    HelloWorld
+      Friends
   },
   data () {
     return {
