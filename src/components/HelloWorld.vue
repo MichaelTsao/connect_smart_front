@@ -11,6 +11,8 @@
                 <v-text-field
                         clearable
                         label="名字"
+                        @change="getItems"
+                        v-model="searchName"
                 ></v-text-field>
             </v-flex>
             <v-spacer></v-spacer>
@@ -136,7 +138,8 @@
                 force: 0,
                 company: ""
             },
-            api_url: "http://cs.cx"
+            api_url: "http://cs.cx",
+            searchName: ''
         }),
 
         computed: {
@@ -178,9 +181,18 @@
             },
 
             initialize() {
+                this.getItems();
+            },
+
+            getItems() {
                 var that = this;
                 const http = require('axios');
-                http.get(this.api_url + '/friends?access-token=100-token')
+
+                if (!this.searchName) {
+                    this.searchName = ''
+                }
+
+                http.get(this.api_url + '/friends?access-token=100-token&name=' + this.searchName)
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
