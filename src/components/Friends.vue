@@ -138,7 +138,6 @@
                 force: 0,
                 company: ""
             },
-            api_url: "http://cs.cx",
             searchName: ''
         }),
 
@@ -172,9 +171,8 @@
 
         methods: {
             selectToDict(select) {
-                var dict = {0: '未知'};
-                var key;
-                for (key in select) {
+                let dict = {0: '未知'};
+                for (let key in select) {
                     dict[select[key]['value']] = select[key]['text']
                 }
                 return dict;
@@ -185,14 +183,14 @@
             },
 
             getItems() {
-                var that = this;
+                let that = this;
                 const http = require('axios');
 
                 if (!this.searchName) {
                     this.searchName = ''
                 }
 
-                http.get(this.api_url + '/friends?access-token=100-token&name=' + this.searchName)
+                http.get(process.env.VUE_APP_API_URL + '/friends?access-token=100-token&name=' + this.searchName)
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
@@ -214,7 +212,7 @@
                 const index = this.friends.indexOf(item);
                 if (confirm('确定删除此好友?')) {
                     const http = require('axios');
-                    http.delete(this.api_url + '/friends/' + this.friends[index]['_id'] + '?access-token=100-token')
+                    http.delete(process.env.VUE_APP_API_URL + '/friends/' + this.friends[index]['_id'] + '?access-token=100-token')
                         .then(function (response) {
                             // handle success
                             console.log(response);
@@ -242,7 +240,7 @@
                 if (this.editedIndex > -1) {
                     Object.assign(this.friends[this.editedIndex], this.editedItem);
 
-                    http.put(this.api_url + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                    http.put(process.env.VUE_APP_API_URL + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
                         .then(function (response) {
                             // handle success
                             console.log(response);
@@ -253,7 +251,7 @@
                         });
 
                 } else {
-                    http.post(this.api_url + '/friends?access-token=100-token', this.editedItem)
+                    http.post(process.env.VUE_APP_API_URL + '/friends?access-token=100-token', this.editedItem)
                         .then(function (response) {
                             // handle success
                             that.friends.push(response.data);
