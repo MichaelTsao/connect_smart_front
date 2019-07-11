@@ -16,7 +16,7 @@
                 ></v-text-field>
             </v-flex>
             <v-spacer></v-spacer>
-            <v-dialog max-width="500px" v-model="dialog">
+            <v-dialog max-width="1000px" v-model="dialog">
                 <template v-slot:activator="{ on }">
                     <v-btn class="mb-2" color="primary" dark v-on="on">新朋友</v-btn>
                 </template>
@@ -28,33 +28,192 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <v-flex md4 sm6 xs12>
-                                    <v-text-field label="名字" v-model="editedItem.name"></v-text-field>
+                                <!--                                关系信息-->
+                                <v-flex md3 sm6 xs12>
+                                    <v-text-field
+                                            label="名字"
+                                            v-model="editedItem.name"
+                                    ></v-text-field>
                                 </v-flex>
-                                <v-flex md4 sm6 xs12>
+                                <v-flex md2 sm6 xs12>
                                     <v-select
                                             :items="types"
                                             label="人脉强度"
                                             v-model="editedItem.type"
                                     ></v-select>
                                 </v-flex>
-                                <v-flex md4 sm6 xs12>
+                                <v-flex md2 sm6 xs12>
                                     <v-select
                                             :items="familiars"
                                             label="熟识度"
                                             v-model="editedItem.familiar"
                                     ></v-select>
                                 </v-flex>
-                                <v-flex md4 sm6 xs12>
+                                <v-flex md2 sm6 xs12>
                                     <v-select
                                             :items="forces"
                                             label="影响力"
                                             v-model="editedItem.force"
                                     ></v-select>
                                 </v-flex>
-                                <v-flex md4 sm6 xs12>
-                                    <v-text-field label="公司" v-model="editedItem.company"></v-text-field>
+                                <v-flex md3 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.relation">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('relation', 'editedItem.relation', $event)"
+                                                    label="关系点"
+                                                    v-model="editedItem.relation"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('relation', 'editedItem.relation', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
                                 </v-flex>
+
+                                <!--                                公司信息-->
+                                <v-flex md4 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.company">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('company', 'editedItem.company', $event)"
+                                                    label="公司"
+                                                    v-model="editedItem.company"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('company', 'editedItem.company', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.position">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('position', 'editedItem.position', $event)"
+                                                    label="职位"
+                                                    v-model="editedItem.position"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('position', 'editedItem.position', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex md4 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.industry">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('industry', 'editedItem.industry', $event)"
+                                                    label="行业"
+                                                    v-model="editedItem.industry"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('industry', 'editedItem.industry', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+
+                                <!--                                个人信息-->
+                                <v-flex md2 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.location">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('location', 'editedItem.location', $event)"
+                                                    label="地区"
+                                                    v-model="editedItem.location"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('location', 'editedItem.location', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex md2 sm6 xs12>
+                                    <v-select
+                                            :items="gender"
+                                            label="性别"
+                                            v-model="editedItem.gender"
+                                    ></v-select>
+                                </v-flex>
+                                <v-flex md3 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.birthday">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('birthday', 'editedItem.birthday', $event)"
+                                                    label="生日"
+                                                    v-model="editedItem.birthday"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('birthday', 'editedItem.birthday', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex md2 sm6 xs12>
+                                    <v-menu offset-y v-model="showMenu.hometown">
+                                        <template v-slot:activator="{ on }">
+                                            <v-text-field
+                                                    @keyup="queryForKeywords('hometown', 'editedItem.hometown', $event)"
+                                                    label="家乡"
+                                                    v-model="editedItem.hometown"
+                                            ></v-text-field>
+                                        </template>
+                                        <v-list>
+                                            <v-list-tile
+                                                    :key="index"
+                                                    @click="setKeyword('hometown', 'editedItem.hometown', index)"
+                                                    v-for="(item, index) in suggestKeywords"
+                                            >
+                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
+                                            </v-list-tile>
+                                        </v-list>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex md3 sm6 xs12>
+                                    <v-text-field
+                                            label="手机号"
+                                            v-model="editedItem.phone"
+                                    ></v-text-field>
+                                </v-flex>
+
                             </v-layout>
                         </v-container>
                     </v-card-text>
@@ -72,6 +231,7 @@
                 :headers="headers"
                 :items="friends"
                 class="elevation-1"
+                :rows-per-page-items='[10,25,{"text":"$vuetify.dataIterator.rowsPerPageAll","value":-1}]'
         >
             <template v-slot:items="props">
                 <td>{{ props.item.name }}</td>
@@ -79,6 +239,8 @@
                 <td class="text-xs-right">{{ familiarDict[props.item.familiar] }}</td>
                 <td class="text-xs-right">{{ forceDict[props.item.force] }}</td>
                 <td class="text-xs-right">{{ props.item.company }}</td>
+                <td class="text-xs-right">{{ props.item.relation }}</td>
+                <td class="text-xs-right">{{ props.item.location }}</td>
                 <td class="justify-center layout px-0">
                     <v-icon
                             @click="editItem(props.item)"
@@ -117,28 +279,57 @@
                 {text: '熟识度', value: 'familiar', align: 'right'},
                 {text: '影响力', value: 'force', align: 'right'},
                 {text: '公司', value: 'company', align: 'right'},
+                {text: '关系点', value: 'relation', align: 'right'},
+                {text: '地区', value: 'location', align: 'right'},
                 {text: '操作', value: 'action', sortable: false, align: 'center'}
             ],
             friends: [],
             types: [{value: 3, text: '密友'}, {value: 2, text: '好友'}, {value: 1, text: '朋友'}],
             familiars: [{value: 3, text: '熟'}, {value: 2, text: '一般'}, {value: 1, text: '生'}],
             forces: [{value: 3, text: '强'}, {value: 2, text: '中'}, {value: 1, text: '弱'}],
+            gender: [{value: 1, text: '男'}, {value: 2, text: '女'}],
             editedIndex: -1,
             editedItem: {
                 name: '',
                 type: 0,
                 familiar: 0,
                 force: 0,
-                company: ''
+                company: '',
+                position: '',
+                industry: '',
+                location: '',
+                gender: 0,
+                phone: '',
+                birthday: '',
+                hometown: '',
+                relation: ''
             },
             defaultItem: {
                 name: '',
                 type: 0,
                 familiar: 0,
                 force: 0,
-                company: ""
+                company: "",
+                position: "",
+                industry: "",
+                location: '',
+                gender: 0,
+                phone: '',
+                birthday: '',
+                hometown: '',
+                relation: ''
             },
-            searchName: ''
+            searchName: '',
+            suggestKeywords: [],
+            showMenu: {
+                relation: false,
+                location: false,
+                position: false,
+                industry: false,
+                birthday: false,
+                hometown: false,
+                company: false
+            },
         }),
 
         computed: {
@@ -166,7 +357,7 @@
         },
 
         created() {
-            this.initialize()
+            this.initialize();
         },
 
         methods: {
@@ -176,6 +367,32 @@
                     dict[select[key]['value']] = select[key]['text']
                 }
                 return dict;
+            },
+
+            queryForKeywords: function (type, key, event) {
+                let that = this;
+                const http = require('axios');
+
+                let value = eval('this.' + key);
+                if (typeof value == 'undefined') {
+                    value = '';
+                }
+                http.get(process.env.VUE_APP_API_URL + '/friends/suggest/' + type + '/' + encodeURI(value) + '?access-token=100-token')
+                    .then(function (response) {
+                        that.suggestKeywords = response.data;
+                        // console.log(response);
+
+                        that.$nextTick(() => {
+                            eval('that.showMenu.' + type + ' = true');
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            setKeyword: function (type, key, index) {
+                eval("this." + key + "='" + this.suggestKeywords[index] + "'");
             },
 
             initialize() {
