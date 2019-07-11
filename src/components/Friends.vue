@@ -407,7 +407,7 @@
                     this.searchName = ''
                 }
 
-                http.get(process.env.VUE_APP_API_URL + '/friends?access-token=100-token&name=' + this.searchName)
+                http.get(process.env.VUE_APP_API_URL + '/friends?access-token=100-token&per-page=500&name=' + this.searchName)
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
