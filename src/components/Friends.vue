@@ -382,9 +382,11 @@
                         that.suggestKeywords = response.data;
                         // console.log(response);
 
-                        that.$nextTick(() => {
-                            eval('that.showMenu.' + type + ' = true');
-                        });
+                        if (typeof response.data !== 'undefined' && response.data.length > 0) {
+                            that.$nextTick(() => {
+                                eval('that.showMenu.' + type + ' = true');
+                            });
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);
