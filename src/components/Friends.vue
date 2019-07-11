@@ -386,6 +386,8 @@
                             that.$nextTick(() => {
                                 eval('that.showMenu.' + type + ' = true');
                             });
+                        } else {
+                            eval('that.showMenu.' + type + ' = false');
                         }
                     })
                     .catch(function (error) {
