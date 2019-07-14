@@ -4,13 +4,15 @@ import './plugins/vuetify'
 import App from './App.vue'
 import Friends from './components/Friends'
 import Stat from './components/Stat'
+import NotFound from './components/NotFound'
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 
 const routes = [
+    {path: '/', component: Stat},
   {path: '/friends', component: Friends},
-  {path: '/', component: Stat}
+    {path: '*', component: NotFound},
 ]
 
 const router = new VueRouter({
