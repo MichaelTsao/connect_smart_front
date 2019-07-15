@@ -15,6 +15,14 @@
                         v-model="searchName"
                 ></v-text-field>
             </v-flex>
+            <v-flex class="mt-3 ml-2" md2 sm2 xs3>
+                <v-select
+                        :items="relations"
+                        @change="getItems"
+                        label="关系点"
+                        v-model="searchRelation"
+                ></v-select>
+            </v-flex>
             <v-spacer></v-spacer>
             <v-dialog max-width="1000px" v-model="dialog">
                 <template v-slot:activator="{ on }">
@@ -320,7 +328,9 @@
                 relation: ''
             },
             searchName: '',
+            searchRelation: '',
             suggestKeywords: [],
+            relations: [''],
             showMenu: {
                 relation: false,
                 location: false,
@@ -401,6 +411,18 @@
 
             initialize() {
                 this.getItems();
+
+                let that = this;
+                const http = require('axios');
+                http.get(process.env.VUE_APP_API_URL + '/friends/groupby/relation?access-token=100-token')
+                    .then(function (response) {
+                        for (let i in response.data) {
+                            that.relations.push(response.data[i]._id)
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
 
             getItems() {
@@ -411,7 +433,14 @@
                     this.searchName = ''
                 }
 
-                http.get(process.env.VUE_APP_API_URL + '/friends?access-token=100-token&per-page=500&name=' + this.searchName)
+                let url = process.env.VUE_APP_API_URL + '/friends?access-token=100-token&per-page=500';
+                if (this.searchName) {
+                    url += '&name=' + this.searchName;
+                }
+                if (this.searchRelation) {
+                    url += '&relation=' + this.searchRelation;
+                }
+                http.get(url)
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;

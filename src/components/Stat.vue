@@ -24,8 +24,6 @@
                     </v-card-title>
                 </v-card>
             </v-flex>
-
-
         </v-layout>
     </v-container>
 </template>
