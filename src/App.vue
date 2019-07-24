@@ -11,9 +11,24 @@
             <v-btn icon to="/friends">
                 <v-icon>people</v-icon>
             </v-btn>
-            <v-btn icon>
+            <v-btn icon to="/connects">
                 <v-icon>forum</v-icon>
             </v-btn>
+
+            <v-fab-transition>
+                <v-btn
+                        absolute
+                        color="pink"
+                        dark
+                        fab
+                        left
+                        style="margin-top: 100px"
+                        top
+                        v-show="show_add_button"
+                >
+                    <v-icon>add</v-icon>
+                </v-btn>
+            </v-fab-transition>
         </v-toolbar>
 
         <v-content>
@@ -27,8 +42,17 @@
         name: 'App',
         data() {
             return {
-                //
+                show_add_button: false
             }
-        }
+        },
+        watch: {
+            $route(to) {
+                if (to.path === '/connects') {
+                    this.show_add_button = true;
+                } else {
+                    this.show_add_button = false;
+                }
+            }
+        },
     }
 </script>

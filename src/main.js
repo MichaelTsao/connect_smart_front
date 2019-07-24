@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import './plugins/vuetify'
 import App from './App.vue'
 import Friends from './components/Friends'
+import Connect from './components/Connect'
 import Stat from './components/Stat'
 import NotFound from './components/NotFound'
 
@@ -12,6 +13,7 @@ Vue.use(VueRouter);
 const routes = [
     {path: '/', component: Stat},
   {path: '/friends', component: Friends},
+  {path: '/connects', component: Connect},
     {path: '*', component: NotFound},
 ]
 
