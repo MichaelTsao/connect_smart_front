@@ -48,11 +48,10 @@
         methods: {
             drawCharts() {
                 let echarts = require('echarts');
-                const http = require('axios');
 
                 for (let j in this.contents) {
                     let type = this.contents[j].type;
-                    http.get(process.env.VUE_APP_API_URL + '/friends/groupby/' + type + '?access-token=100-token')
+                    this.$http.get(process.env.VUE_APP_API_URL + '/friends/groupby/' + type + '?access-token=100-token')
                         .then(function (response) {
                             let data = [];
                             for (let i in response.data) {

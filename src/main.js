@@ -9,6 +9,7 @@ import NotFound from './components/NotFound'
 
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
+Vue.prototype.$http = require('axios');
 
 const routes = [
     {path: '/', component: Stat},

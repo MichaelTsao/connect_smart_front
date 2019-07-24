@@ -381,13 +381,12 @@
 
             queryForKeywords: function (type, key, event) {
                 let that = this;
-                const http = require('axios');
 
                 let value = eval('this.' + key);
                 if (typeof value == 'undefined') {
                     value = '';
                 }
-                http.get(process.env.VUE_APP_API_URL + '/friends/suggest/' + type + '/' + encodeURI(value) + '?access-token=100-token')
+                this.$http.get(process.env.VUE_APP_API_URL + '/friends/suggest/' + type + '/' + encodeURI(value) + '?access-token=100-token')
                     .then(function (response) {
                         that.suggestKeywords = response.data;
                         // console.log(response);
@@ -413,8 +412,7 @@
                 this.getItems();
 
                 let that = this;
-                const http = require('axios');
-                http.get(process.env.VUE_APP_API_URL + '/friends/groupby/relation?access-token=100-token')
+                this.$http.get(process.env.VUE_APP_API_URL + '/friends/groupby/relation?access-token=100-token')
                     .then(function (response) {
                         for (let i in response.data) {
                             that.relations.push(response.data[i]._id)
@@ -427,7 +425,6 @@
 
             getItems() {
                 let that = this;
-                const http = require('axios');
 
                 if (!this.searchName) {
                     this.searchName = ''
@@ -440,7 +437,7 @@
                 if (this.searchRelation) {
                     url += '&relation=' + this.searchRelation;
                 }
-                http.get(url)
+                this.$http.get(url)
                     .then(function (response) {
                         // handle success
                         that.friends = response.data;
@@ -461,8 +458,7 @@
             deleteItem(item) {
                 const index = this.friends.indexOf(item);
                 if (confirm('确定删除此好友?')) {
-                    const http = require('axios');
-                    http.delete(process.env.VUE_APP_API_URL + '/friends/' + this.friends[index]['_id'] + '?access-token=100-token')
+                    this.$http.delete(process.env.VUE_APP_API_URL + '/friends/' + this.friends[index]['_id'] + '?access-token=100-token')
                         .then(function (response) {
                             // handle success
                             console.log(response);
@@ -486,11 +482,10 @@
 
             save() {
                 var that = this;
-                const http = require('axios');
                 if (this.editedIndex > -1) {
                     Object.assign(this.friends[this.editedIndex], this.editedItem);
 
-                    http.put(process.env.VUE_APP_API_URL + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                    this.$http.put(process.env.VUE_APP_API_URL + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
                         .then(function (response) {
                             // handle success
                             console.log(response);
@@ -501,7 +496,7 @@
                         });
 
                 } else {
-                    http.post(process.env.VUE_APP_API_URL + '/friends?access-token=100-token', this.editedItem)
+                    this.$http.post(process.env.VUE_APP_API_URL + '/friends?access-token=100-token', this.editedItem)
                         .then(function (response) {
                             // handle success
                             that.friends.push(response.data);

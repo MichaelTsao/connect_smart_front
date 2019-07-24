@@ -47,11 +47,7 @@
         },
         watch: {
             $route(to) {
-                if (to.path === '/connects') {
-                    this.show_add_button = true;
-                } else {
-                    this.show_add_button = false;
-                }
+                this.show_add_button = to.path === '/connects';
             }
         },
     }
