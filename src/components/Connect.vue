@@ -1,12 +1,20 @@
 <template>
     <v-timeline :dense="$vuetify.breakpoint.smAndDown">
         <v-timeline-item
-                color="purple lighten-2"
+                :color="colors[index] + ' lighten-1'"
+                :key="index"
                 fill-dot
-                right
+                :left="sides[index]"
+                :right="!sides[index]"
+                v-for="(item, index) in connects"
         >
+            <template v-slot:opposite>
+                <span>{{item.startDate}}</span>
+            </template>
             <v-card>
-                <v-card-title class="purple lighten-2">
+                <v-card-title
+                        :class="colors[index] + ' lighten-3'"
+                >
                     <v-icon
                             class="mr-4"
                             dark
@@ -14,13 +22,12 @@
                     >
                         mdi-magnify
                     </v-icon>
-                    <h2 class="display-1 white--text font-weight-light">Title 1</h2>
+                    <h2 class="display-1 white--text font-weight-light">{{item.type}}</h2>
                 </v-card-title>
                 <v-container>
                     <v-layout>
                         <v-flex md10 xs12>
-                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut,
-                            sed euismod convenire principes at. Est et nobis iisque percipit.
+                            {{item.friends.join(" ")}}
                         </v-flex>
                         <v-flex
                                 hidden-sm-and-down
@@ -33,131 +40,160 @@
                 </v-container>
             </v-card>
         </v-timeline-item>
-
-        <v-timeline-item
-                color="amber lighten-1"
-                fill-dot
-                left
-                small
-        >
-            <v-card>
-                <v-card-title class="amber lighten-1 justify-end">
-                    <h2 class="display-1 mr-4 white--text font-weight-light">Title 2</h2>
-                    <v-icon
-                            dark
-                            size="42"
-                    >mdi-home-outline
-                    </v-icon>
-                </v-card-title>
-                <v-container>
-                    <v-layout wrap>
-                        <v-flex md8 xs12>
-                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut,
-                            sed euismod convenire principes at. Est et nobis iisque percipit.
-                        </v-flex>
-                        <v-flex md4 xs12>
-                            Lorem ipsum dolor sit amet, no nam oblique veritus.
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-card>
-        </v-timeline-item>
-
-        <v-timeline-item
-                color="cyan lighten-1"
-                fill-dot
-                right
-        >
-            <v-card>
-                <v-card-title class="cyan lighten-1">
-                    <v-icon
-                            class="mr-4"
-                            dark
-                            size="42"
-                    >
-                        mdi-email-outline
-                    </v-icon>
-                    <h2 class="display-1 white--text font-weight-light">Title 3</h2>
-                </v-card-title>
-                <v-container>
-                    <v-layout wrap>
-                        <v-flex
-                                :key="n"
-                                md4
-                                v-for="n in 3"
-                                xs12
-                        >
-                            Lorem ipsum dolor sit amet, no nam oblique veritus no nam oblique.
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-card>
-        </v-timeline-item>
-
-        <v-timeline-item
-                color="red lighten-1"
-                fill-dot
-                left
-                small
-        >
-            <v-card>
-                <v-card-title class="red lighten-1 justify-end">
-                    <h2 class="display-1 mr-4 white--text font-weight-light">Title 4</h2>
-                    <v-icon
-                            dark
-                            size="42"
-                    >
-                        mdi-account-multiple-outline
-                    </v-icon>
-                </v-card-title>
-                <v-container>
-                    <v-layout wrap>
-                        <v-flex hidden-sm-and-down md2>
-                            <v-icon size="64">mdi-server-network</v-icon>
-                        </v-flex>
-                        <v-flex md10 xs12>
-                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut,
-                            sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando
-                            voluptatibus.
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-card>
-        </v-timeline-item>
-
-        <v-timeline-item
-                color="green lighten-1"
-                fill-dot
-                right
-        >
-            <v-card>
-                <v-card-title class="green lighten-1">
-                    <v-icon
-                            class="mr-4"
-                            dark
-                            size="42"
-                    >
-                        mdi-phone-in-talk
-                    </v-icon>
-                    <h2 class="display-1 white--text font-weight-light">Title 5</h2>
-                </v-card-title>
-                <v-container>
-                    <v-layout>
-                        <v-flex>
-                            Lorem ipsum dolor sit amet, no nam oblique veritus. Commune scaevola imperdiet nec ut,
-                            sed euismod convenire principes at. Est et nobis iisque percipit, an vim zril disputando
-                            voluptatibus, vix an salutandi sententiae.
-                        </v-flex>
-                    </v-layout>
-                </v-container>
-            </v-card>
-        </v-timeline-item>
     </v-timeline>
 </template>
 
 <script>
     export default {
         name: "Connect",
+        data: () => ({
+            connects: [
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3",
+                        "5cf0f5230af46ccb8e4c6111",
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "吃饭",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3",
+                        "5cf0f5230af46ccb8e4c6111",
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "吃饭",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3",
+                        "5cf0f5230af46ccb8e4c6111",
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "吃饭",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+                {
+                    "_id": "5d3d96523b9e5330bd14ca92",
+                    "type": "聚会",
+                    "startDate": "2019-07-11",
+                    "endDate": "2019-07-12",
+                    "friends": [
+                        "5cf0f5230af46ccb8e4c6ee3"
+                    ]
+                },
+            ],
+        }),
+        created() {
+            // this.getItems();
+        },
+        computed: {
+            sides: function () {
+                return this.connects.map(function (value, index) {
+                    return index % 2 === 0;
+                })
+            },
+            colors: function () {
+                return this.connects.map(function (value, index) {
+                    let colors = ['purple', 'red', 'blue', 'teal', 'lime', 'yellow', 'orange', 'brown'];
+                    return colors[index % colors.length];
+                })
+            }
+        },
+        methods: {
+            getItems() {
+                let that = this;
+
+                let url = process.env.VUE_APP_API_URL + '/connects?access-token=100-token';
+                this.$http.get(url)
+                    .then(function (response) {
+                        // handle success
+                        that.connects = response.data;
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    });
+            }
+        },
     }
 </script>
 
