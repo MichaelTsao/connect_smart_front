@@ -97,9 +97,9 @@
                                         </template>
                                         <v-list>
                                             <v-list-tile
+                                                    v-for="(item, index) in suggestKeywords"
                                                     :key="index"
                                                     @click="setKeyword('company', 'editedItem.company', index)"
-                                                    v-for="(item, index) in suggestKeywords"
                                             >
                                                 <v-list-tile-title>{{ item }}</v-list-tile-title>
                                             </v-list-tile>

@@ -1,52 +1,181 @@
 <template>
-    <v-timeline :dense="$vuetify.breakpoint.smAndDown">
-        <v-timeline-item
-                :color="colors[index] + ' lighten-1'"
-                :key="index"
-                fill-dot
-                :left="sides[index]"
-                :right="!sides[index]"
-                v-for="(item, index) in connects"
-        >
-            <template v-slot:opposite>
-                <span>{{item.startDate}}</span>
+    <div>
+        <v-dialog max-width="1000px" v-model="dialog">
+            <template v-slot:activator="{ on }">
+                <v-fab-transition>
+                    <v-btn
+                            color="pink"
+                            dark
+                            fab
+                            fixed
+                            right
+                            style="margin-top: 60px"
+                            top
+                            v-on="on"
+                    >
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                </v-fab-transition>
             </template>
             <v-card>
-                <v-card-title
-                        :class="colors[index] + ' lighten-3'"
-                >
-                    <v-icon
-                            class="mr-4"
-                            dark
-                            size="42"
-                    >
-                        mdi-magnify
-                    </v-icon>
-                    <h2 class="display-1 white--text font-weight-light">{{item.type}}</h2>
+                <v-card-title>
+                    <span class="headline">新连接</span>
                 </v-card-title>
-                <v-container>
-                    <v-layout>
-                        <v-flex md10 xs12>
-                            {{item.friends.join(" ")}}
-                        </v-flex>
-                        <v-flex
-                                hidden-sm-and-down
-                                md2
-                                text-right
-                        >
-                            <v-icon size="64">mdi-calendar-text</v-icon>
-                        </v-flex>
-                    </v-layout>
-                </v-container>
+
+                <v-card-text>
+                    <v-container grid-list-md>
+                        <v-layout wrap>
+                            <v-flex md3 sm6 xs12>
+                                <v-text-field
+                                        label="类型"
+                                        v-model="editedItem.type"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex md3 sm6 xs12>
+                                <v-menu
+                                        :close-on-content-click="false"
+                                        :nudge-right="40"
+                                        full-width
+                                        lazy
+                                        min-width="290px"
+                                        offset-y
+                                        transition="scale-transition"
+                                        v-model="menuStart"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                                label="开始时间"
+                                                prepend-icon="event"
+                                                readonly
+                                                v-model="editedItem.startDate"
+                                                v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker @input="menuStart = false"
+                                                   v-model="editedItem.startDate"></v-date-picker>
+                                </v-menu>
+                            </v-flex>
+                            <v-flex md3 sm6 xs12>
+                                <v-menu
+                                        :close-on-content-click="false"
+                                        :nudge-right="40"
+                                        full-width
+                                        lazy
+                                        min-width="290px"
+                                        offset-y
+                                        transition="scale-transition"
+                                        v-model="menuEnd"
+                                >
+                                    <template v-slot:activator="{ on }">
+                                        <v-text-field
+                                                label="结束时间"
+                                                prepend-icon="event"
+                                                readonly
+                                                v-model="editedItem.endDate"
+                                                v-on="on"
+                                        ></v-text-field>
+                                    </template>
+                                    <v-date-picker @input="menuEnd = false"
+                                                   v-model="editedItem.endDate"></v-date-picker>
+                                </v-menu>
+                            </v-flex>
+                            <v-flex md3 sm6 xs12></v-flex>
+                            <v-flex md3 sm6 xs12>
+                                <v-text-field
+                                        label="朋友"
+                                        v-model="editedItem.friends"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex md12 sm12 xs12>
+                                <v-chip
+                                        close
+                                        color="indigo"
+                                        text-color="white"
+                                >
+                                    <v-avatar>
+                                        <v-icon>account_circle</v-icon>
+                                    </v-avatar>
+                                    Ranee
+                                </v-chip>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="close" color="blue darken-1" flat>关闭</v-btn>
+                    <v-btn @click="save" color="blue darken-1" flat>保存</v-btn>
+                </v-card-actions>
             </v-card>
-        </v-timeline-item>
-    </v-timeline>
+        </v-dialog>
+
+        <v-timeline :dense="$vuetify.breakpoint.smAndDown">
+            <v-timeline-item
+                    :color="colors[index] + ' lighten-1'"
+                    :key="index"
+                    :left="sides[index]"
+                    :right="!sides[index]"
+                    fill-dot
+                    v-for="(item, index) in connects"
+            >
+                <template v-slot:opposite>
+                    <span>{{item.startDate}}</span>
+                </template>
+                <v-card>
+                    <v-card-title
+                            :class="colors[index] + ' lighten-3'"
+                    >
+                        <v-icon
+                                class="mr-4"
+                                dark
+                                size="42"
+                        >
+                            mdi-magnify
+                        </v-icon>
+                        <h2 class="display-1 white--text font-weight-light">{{item.type}}</h2>
+                    </v-card-title>
+                    <v-container>
+                        <v-layout>
+                            <v-flex md10 xs12>
+                                {{item.friends.join(" ")}}
+                            </v-flex>
+                            <v-flex
+                                    hidden-sm-and-down
+                                    md2
+                                    text-right
+                            >
+                                <v-icon size="64">mdi-calendar-text</v-icon>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card>
+            </v-timeline-item>
+        </v-timeline>
+    </div>
 </template>
 
 <script>
     export default {
         name: "Connect",
         data: () => ({
+            dialog: false,
+            editedItem: {
+                type: '',
+                startDate: '',
+                endDate: '',
+                friends: [],
+            },
+            defaultItem: {
+                type: '',
+                startDate: '',
+                endDate: '',
+                friends: [],
+            },
+            editedIndex: -1,
+            menuStart: false,
+            menuEnd: false,
+
             connects: [
                 {
                     "_id": "5d3d96523b9e5330bd14ca92",
@@ -192,6 +321,43 @@
                         // handle error
                         console.log(error);
                     });
+            },
+            close() {
+                this.dialog = false;
+                setTimeout(() => {
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1
+                }, 300)
+            },
+            save() {
+                // var that = this;
+                // if (this.editedIndex > -1) {
+                //     Object.assign(this.friends[this.editedIndex], this.editedItem);
+                //
+                //     this.$http.put(process.env.VUE_APP_API_URL + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                //         .then(function (response) {
+                //             // handle success
+                //             console.log(response);
+                //         })
+                //         .catch(function (error) {
+                //             // handle error
+                //             console.log(error);
+                //         });
+                //
+                // } else {
+                //     this.$http.post(process.env.VUE_APP_API_URL + '/friends?access-token=100-token', this.editedItem)
+                //         .then(function (response) {
+                //             // handle success
+                //             that.friends.push(response.data);
+                //
+                //             console.log(response);
+                //         })
+                //         .catch(function (error) {
+                //             // handle error
+                //             console.log(error);
+                //         });
+                // }
+                this.close()
             }
         },
     }
