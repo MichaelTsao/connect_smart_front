@@ -36,7 +36,7 @@
                     <v-card-text>
                         <v-container grid-list-md>
                             <v-layout wrap>
-                                <!--                                关系信息-->
+                                <!-- 关系信息 -->
                                 <v-flex md3 sm6 xs12>
                                     <v-text-field
                                             label="名字"
@@ -85,7 +85,7 @@
                                     </v-menu>
                                 </v-flex>
 
-                                <!--                                公司信息-->
+                                <!-- 公司信息 -->
                                 <v-flex md4 sm6 xs12>
                                     <v-menu offset-y v-model="showMenu.company">
                                         <template v-slot:activator="{ on }">
@@ -147,7 +147,7 @@
                                     </v-menu>
                                 </v-flex>
 
-                                <!--                                个人信息-->
+                                <!-- 个人信息 -->
                                 <v-flex md2 sm6 xs12>
                                     <v-menu offset-y v-model="showMenu.location">
                                         <template v-slot:activator="{ on }">
