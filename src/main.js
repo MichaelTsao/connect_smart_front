@@ -10,12 +10,13 @@ import NotFound from './components/NotFound'
 
 Vue.config.productionTip = false;
 Vue.prototype.$http = require('axios');
+Vue.use(VueRouter)
 
 const routes = [
-    {path: '/', component: Stat, name: 'stat'},
-    {path: '/friends', component: Friends, name: 'friends'},
-    {path: '/connects', component: Connect, name: 'connects'},
-    {path: '*', component: NotFound, name: '404'},
+    {path: '/', component: Stat},
+    {path: '/friends', component: Friends},
+    {path: '/connects', component: Connect},
+    {path: '*', component: NotFound},
 ];
 
 const router = new VueRouter({
