@@ -30,7 +30,7 @@
                 </template>
                 <v-card>
                     <v-card-title>
-                        <span class="headline">{{ formTitle }}</span>
+                        <span class="headline">{{formTitle}}</span>
                     </v-card-title>
 
                     <v-card-text>
@@ -65,108 +65,28 @@
                                     ></v-select>
                                 </v-flex>
                                 <v-flex md3 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.relation">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('relation', 'editedItem.relation', $event)"
-                                                    label="关系点"
-                                                    v-model="editedItem.relation"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('relation', 'editedItem.relation', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.relation" @choose-value="chooseResult" name="关系点"
+                                                type="relation"></SearchText>
                                 </v-flex>
 
                                 <!-- 公司信息 -->
                                 <v-flex md4 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.company">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('company', 'editedItem.company', $event)"
-                                                    label="公司"
-                                                    v-model="editedItem.company"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    v-for="(item, index) in suggestKeywords"
-                                                    :key="index"
-                                                    @click="setKeyword('company', 'editedItem.company', index)"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.company" @choose-value="chooseResult" name="公司"
+                                                type="company"></SearchText>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.position">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('position', 'editedItem.position', $event)"
-                                                    label="职位"
-                                                    v-model="editedItem.position"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('position', 'editedItem.position', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.position" @choose-value="chooseResult" name="职位"
+                                                type="position"></SearchText>
                                 </v-flex>
                                 <v-flex md4 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.industry">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('industry', 'editedItem.industry', $event)"
-                                                    label="行业"
-                                                    v-model="editedItem.industry"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('industry', 'editedItem.industry', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.industry" @choose-value="chooseResult" name="行业"
+                                                type="industry"></SearchText>
                                 </v-flex>
 
                                 <!-- 个人信息 -->
                                 <v-flex md2 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.location">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('location', 'editedItem.location', $event)"
-                                                    label="地区"
-                                                    v-model="editedItem.location"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('location', 'editedItem.location', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.location" @choose-value="chooseResult" name="地区"
+                                                type="location"></SearchText>
                                 </v-flex>
                                 <v-flex md2 sm6 xs12>
                                     <v-select
@@ -176,44 +96,12 @@
                                     ></v-select>
                                 </v-flex>
                                 <v-flex md3 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.birthday">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('birthday', 'editedItem.birthday', $event)"
-                                                    label="生日"
-                                                    v-model="editedItem.birthday"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('birthday', 'editedItem.birthday', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.birthday" @choose-value="chooseResult" name="生日"
+                                                type="birthday"></SearchText>
                                 </v-flex>
                                 <v-flex md2 sm6 xs12>
-                                    <v-menu offset-y v-model="showMenu.hometown">
-                                        <template v-slot:activator="{ on }">
-                                            <v-text-field
-                                                    @keyup="queryForKeywords('hometown', 'editedItem.hometown', $event)"
-                                                    label="家乡"
-                                                    v-model="editedItem.hometown"
-                                            ></v-text-field>
-                                        </template>
-                                        <v-list>
-                                            <v-list-tile
-                                                    :key="index"
-                                                    @click="setKeyword('hometown', 'editedItem.hometown', index)"
-                                                    v-for="(item, index) in suggestKeywords"
-                                            >
-                                                <v-list-tile-title>{{ item }}</v-list-tile-title>
-                                            </v-list-tile>
-                                        </v-list>
-                                    </v-menu>
+                                    <SearchText :values="editedItem.hometown" @choose-value="chooseResult" name="家乡"
+                                                type="hometown"></SearchText>
                                 </v-flex>
                                 <v-flex md3 sm6 xs12>
                                     <v-text-field
@@ -273,7 +161,13 @@
 </template>
 
 <script>
+    import SearchText from "./SearchText";
+
     export default {
+        components: {
+            SearchText,
+        },
+
         data: () => ({
             dialog: false,
             headers: [
@@ -331,15 +225,6 @@
             searchRelation: '',
             suggestKeywords: [],
             relations: [''],
-            showMenu: {
-                relation: false,
-                location: false,
-                position: false,
-                industry: false,
-                birthday: false,
-                hometown: false,
-                company: false
-            },
         }),
 
         computed: {
@@ -371,41 +256,16 @@
         },
 
         methods: {
+            chooseResult: function (type, value) {
+                eval('this.editedItem.' + type + "='" + value + "'");
+            },
+
             selectToDict(select) {
                 let dict = {0: '未知'};
                 for (let key in select) {
                     dict[select[key]['value']] = select[key]['text']
                 }
                 return dict;
-            },
-
-            queryForKeywords: function (type, key, event) {
-                let that = this;
-
-                let value = eval('this.' + key);
-                if (typeof value == 'undefined') {
-                    value = '';
-                }
-                this.$http.get(process.env.VUE_APP_API_URL + '/friends/suggest/' + type + '/' + encodeURI(value) + '?access-token=100-token')
-                    .then(function (response) {
-                        that.suggestKeywords = response.data;
-                        // console.log(response);
-
-                        if (typeof response.data !== 'undefined' && response.data.length > 0) {
-                            that.$nextTick(() => {
-                                eval('that.showMenu.' + type + ' = true');
-                            });
-                        } else {
-                            eval('that.showMenu.' + type + ' = false');
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
-
-            setKeyword: function (type, key, index) {
-                eval("this." + key + "='" + this.suggestKeywords[index] + "'");
             },
 
             initialize() {
