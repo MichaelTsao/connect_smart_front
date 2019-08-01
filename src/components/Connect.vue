@@ -26,10 +26,8 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex md3 sm6 xs12>
-                                <v-text-field
-                                        label="类型"
-                                        v-model="editedItem.type"
-                                ></v-text-field>
+                                <SearchText :values="editedItem.type" @choose-value="chooseResult" models="connects"
+                                            name="类型" type="type"></SearchText>
                             </v-flex>
                             <v-flex md3 sm6 xs12>
                                 <v-menu
@@ -311,6 +309,9 @@
             }
         },
         methods: {
+            chooseResult: function (type, value) {
+                eval('this.editedItem.' + type + "='" + value + "'");
+            },
             removeFriend: function (index) {
                 this.editedItem.friends.splice(index, 1)
             },

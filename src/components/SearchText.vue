@@ -23,7 +23,7 @@
 <script>
     export default {
         name: "SearchText",
-        props: ['type', 'name', 'values'],
+        props: ['type', 'name', 'values', 'models'],
         data: function () {
             return {
                 content: this.values,
@@ -36,6 +36,11 @@
                 this.content = val;
             }
         },
+        computed: {
+            model() {
+                return typeof this.models === 'undefined' ? 'friends' : this.models;
+            }
+        },
         methods: {
             queryForKeywords: function () {
                 let that = this;
@@ -46,9 +51,9 @@
 
                 let url = '';
                 if (this.type === "name") {
-                    url = process.env.VUE_APP_API_URL + '/friends' + '?access-token=100-token&name=' + encodeURI(this.content);
+                    url = process.env.VUE_APP_API_URL + '/' + this.model + '?access-token=100-token&name=' + encodeURI(this.content);
                 } else {
-                    url = process.env.VUE_APP_API_URL + '/friends/suggest/' + this.type + '/' + encodeURI(this.content) + '?access-token=100-token';
+                    url = process.env.VUE_APP_API_URL + '/' + this.model + '/suggest/' + this.type + '/' + encodeURI(this.content) + '?access-token=100-token';
                 }
                 this.$http.get(url)
                     .then(function (response) {
