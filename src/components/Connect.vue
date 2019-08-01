@@ -179,122 +179,10 @@
             menuStart: false,
             menuEnd: false,
 
-            connects: [
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3",
-                        "5cf0f5230af46ccb8e4c6111",
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "吃饭",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3",
-                        "5cf0f5230af46ccb8e4c6111",
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "吃饭",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3",
-                        "5cf0f5230af46ccb8e4c6111",
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "吃饭",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-                {
-                    "_id": "5d3d96523b9e5330bd14ca92",
-                    "type": "聚会",
-                    "startDate": "2019-07-11",
-                    "endDate": "2019-07-12",
-                    "friends": [
-                        "5cf0f5230af46ccb8e4c6ee3"
-                    ]
-                },
-            ],
+            connects: [],
         }),
         created() {
-            // this.getItems();
+            this.getItems();
         },
         computed: {
             sides: function () {
@@ -342,33 +230,33 @@
                 }, 300)
             },
             save() {
-                // var that = this;
-                // if (this.editedIndex > -1) {
-                //     Object.assign(this.friends[this.editedIndex], this.editedItem);
-                //
-                //     this.$http.put(process.env.VUE_APP_API_URL + '/friends/' + this.friends[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
-                //         .then(function (response) {
-                //             // handle success
-                //             console.log(response);
-                //         })
-                //         .catch(function (error) {
-                //             // handle error
-                //             console.log(error);
-                //         });
-                //
-                // } else {
-                //     this.$http.post(process.env.VUE_APP_API_URL + '/friends?access-token=100-token', this.editedItem)
-                //         .then(function (response) {
-                //             // handle success
-                //             that.friends.push(response.data);
-                //
-                //             console.log(response);
-                //         })
-                //         .catch(function (error) {
-                //             // handle error
-                //             console.log(error);
-                //         });
-                // }
+                let that = this;
+                if (this.editedIndex > -1) {
+                    Object.assign(this.connects[this.editedIndex], this.editedItem);
+
+                    this.$http.put(process.env.VUE_APP_API_URL + '/connects/' + this.connects[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+
+                } else {
+                    this.$http.post(process.env.VUE_APP_API_URL + '/connects?access-token=100-token', this.editedItem)
+                        .then(function (response) {
+                            // handle success
+                            that.connects.push(response.data);
+
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+                }
                 this.close()
             }
         },
