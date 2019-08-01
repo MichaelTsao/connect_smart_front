@@ -80,20 +80,21 @@
                                 <SearchText @choose-value="chooseFriend" name="朋友" type="name"></SearchText>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
-                                <v-chip
-                                        :key="index"
-                                        @click:close="removeFriend(index)"
-                                        close
-                                        class="mr-2"
-                                        color="indigo"
-                                        text-color="white"
-                                        v-for="(item, index) in editedItem.friends"
-                                >
-                                    <v-avatar>
-                                        <v-icon>mdi-account-circle</v-icon>
-                                    </v-avatar>
-                                    {{item.name}}
-                                </v-chip>
+                                <v-chip-group>
+                                    <v-chip
+                                            :key="index"
+                                            @click:close="removeFriend(index)"
+                                            close
+                                            color="indigo"
+                                            text-color="white"
+                                            v-for="(item, index) in editedItem.friends"
+                                    >
+                                        <v-avatar>
+                                            <v-icon>mdi-account-circle</v-icon>
+                                        </v-avatar>
+                                        {{item.name}}
+                                    </v-chip>
+                                </v-chip-group>
                             </v-flex>
                         </v-layout>
                     </v-container>
