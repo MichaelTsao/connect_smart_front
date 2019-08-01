@@ -104,8 +104,8 @@
 
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click="close" color="blue darken-1" flat>关闭</v-btn>
-                    <v-btn @click="save" color="blue darken-1" flat>保存</v-btn>
+                    <v-btn @click="close" color="blue darken-1" text>关闭</v-btn>
+                    <v-btn @click="save" color="blue darken-1" text>保存</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>

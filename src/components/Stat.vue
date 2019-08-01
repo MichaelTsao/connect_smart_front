@@ -5,16 +5,16 @@
                 wrap
         >
             <v-flex
+                    :key="content.name"
+                    v-for="content in contents"
                     d-flex
                     md4
                     xs12
-                    :key="content.name"
-                    v-for="content in contents"
             >
                 <v-card>
                     <div
                             :id="'pie-'+content.type"
-                            style="width: 350px; height:350px; margin-top: 25px; margin-left: 15px"
+                            style="width: 380px; height:350px; margin-left: 15px"
                     ></div>
 
                     <v-card-title primary-title>
