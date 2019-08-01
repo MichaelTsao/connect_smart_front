@@ -80,7 +80,7 @@
                                 <SearchText @choose-value="chooseFriend" name="朋友" type="name"></SearchText>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
-                                <v-chip-group>
+                                <v-chip-group column>
                                     <v-chip
                                             :key="index"
                                             @click:close="removeFriend(index)"
