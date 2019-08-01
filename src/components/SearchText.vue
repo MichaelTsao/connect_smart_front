@@ -26,14 +26,15 @@
         props: ['type', 'name', 'values'],
         data: function () {
             return {
+                content: this.values,
                 showMenu: false,
                 suggestKeywords: [],
             }
         },
-        computed: {
-            content() {
-                return this.values
-            },
+        watch: {
+            values: function (val) {
+                this.content = val;
+            }
         },
         methods: {
             queryForKeywords: function () {
@@ -70,7 +71,7 @@
             setKeyword: function (index) {
                 let item = this.suggestKeywords[index];
                 if (this.type === 'name') {
-                    this.content = item.name + "(" + item.company + ")";
+                    this.content = '';
                 } else {
                     this.content = item;
                 }
