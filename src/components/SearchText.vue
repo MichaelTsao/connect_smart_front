@@ -13,7 +13,8 @@
                     @click="setKeyword(index)"
                     v-for="(item, index) in suggestKeywords"
             >
-                <v-list-item-title>{{item}}</v-list-item-title>
+                <v-list-item-title v-if="type === 'name'">{{item.name}}({{item.company}})</v-list-item-title>
+                <v-list-item-title v-else>{{item}}</v-list-item-title>
             </v-list-item>
         </v-list>
     </v-menu>
@@ -25,10 +26,14 @@
         props: ['type', 'name', 'values'],
         data: function () {
             return {
-                content: this.values,
                 showMenu: false,
                 suggestKeywords: [],
             }
+        },
+        computed: {
+            content() {
+                return this.values
+            },
         },
         methods: {
             queryForKeywords: function () {
@@ -37,7 +42,14 @@
                 if (typeof this.content == 'undefined') {
                     this.content = '';
                 }
-                this.$http.get(process.env.VUE_APP_API_URL + '/friends/suggest/' + this.type + '/' + encodeURI(this.content) + '?access-token=100-token')
+
+                let url = '';
+                if (this.type === "name") {
+                    url = process.env.VUE_APP_API_URL + '/friends' + '?access-token=100-token&name=' + encodeURI(this.content);
+                } else {
+                    url = process.env.VUE_APP_API_URL + '/friends/suggest/' + this.type + '/' + encodeURI(this.content) + '?access-token=100-token';
+                }
+                this.$http.get(url)
                     .then(function (response) {
                         that.suggestKeywords = response.data;
                         // console.log(response);
@@ -56,8 +68,13 @@
             },
 
             setKeyword: function (index) {
-                this.content = this.suggestKeywords[index];
-                this.$emit('choose-value', this.type, this.content);
+                let item = this.suggestKeywords[index];
+                if (this.type === 'name') {
+                    this.content = item.name + "(" + item.company + ")";
+                } else {
+                    this.content = item;
+                }
+                this.$emit('choose-value', this.type, item);
             },
         }
     }

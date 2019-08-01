@@ -36,7 +36,6 @@
                                         :close-on-content-click="false"
                                         :nudge-right="40"
                                         full-width
-                                        lazy
                                         min-width="290px"
                                         offset-y
                                         transition="scale-transition"
@@ -60,7 +59,6 @@
                                         :close-on-content-click="false"
                                         :nudge-right="40"
                                         full-width
-                                        lazy
                                         min-width="290px"
                                         offset-y
                                         transition="scale-transition"
@@ -81,21 +79,22 @@
                             </v-flex>
                             <v-flex md3 sm6 xs12></v-flex>
                             <v-flex md3 sm6 xs12>
-                                <v-text-field
-                                        label="朋友"
-                                        v-model="editedItem.friends"
-                                ></v-text-field>
+                                <SearchText @choose-value="chooseFriend" name="朋友" type="name"></SearchText>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 <v-chip
+                                        :key="index"
+                                        @click:close="removeFriend(index)"
                                         close
+                                        class="mr-2"
                                         color="indigo"
                                         text-color="white"
+                                        v-for="(item, index) in editedItem.friends"
                                 >
                                     <v-avatar>
-                                        <v-icon>account_circle</v-icon>
+                                        <v-icon>mdi-account-circle</v-icon>
                                     </v-avatar>
-                                    Ranee
+                                    {{item.name}}
                                 </v-chip>
                             </v-flex>
                         </v-layout>
@@ -112,12 +111,12 @@
 
         <v-timeline :dense="$vuetify.breakpoint.smAndDown">
             <v-timeline-item
-                    :color="colors[index] + ' lighten-1'"
                     :key="index"
+                    v-for="(item, index) in connects"
+                    :color="colors[index] + ' lighten-1'"
                     :left="sides[index]"
                     :right="!sides[index]"
                     fill-dot
-                    v-for="(item, index) in connects"
             >
                 <template v-slot:opposite>
                     <span>{{item.startDate}}</span>
@@ -156,7 +155,12 @@
 </template>
 
 <script>
+    import SearchText from "./SearchText";
+
     export default {
+        components: {
+            SearchText,
+        },
         name: "Connect",
         data: () => ({
             dialog: false,
@@ -307,6 +311,12 @@
             }
         },
         methods: {
+            removeFriend: function (index) {
+                this.editedItem.friends.splice(index, 1)
+            },
+            chooseFriend: function (type, value) {
+                this.editedItem.friends.push(value);
+            },
             getItems() {
                 let that = this;
 

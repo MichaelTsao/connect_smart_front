@@ -5,8 +5,8 @@
                 wrap
         >
             <v-flex
-                    :key="content.name"
                     v-for="content in contents"
+                    :key="content.name"
                     d-flex
                     md4
                     xs12
