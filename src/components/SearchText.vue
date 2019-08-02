@@ -49,6 +49,8 @@
                     this.content = '';
                 }
 
+                this.$emit('update:values', this.content);
+
                 let url = '';
                 if (this.type === "name") {
                     url = process.env.VUE_APP_API_URL + '/' + this.model + '?access-token=100-token&name=' + encodeURI(this.content);
@@ -80,6 +82,7 @@
                 } else {
                     this.content = item;
                 }
+                this.$emit('update:values', item);
                 this.$emit('choose-value', this.type, item);
             },
         }

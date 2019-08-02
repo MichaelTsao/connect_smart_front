@@ -73,28 +73,27 @@
                                         ></v-select>
                                     </v-flex>
                                     <v-flex md3 sm6 xs12>
-                                        <SearchText :values="editedItem.relation" @choose-value="chooseResult"
-                                                    name="关系点"
+                                        <SearchText :values.sync="editedItem.relation" name="关系点"
                                                     type="relation"></SearchText>
                                     </v-flex>
 
                                     <!-- 公司信息 -->
                                     <v-flex md4 sm6 xs12>
-                                        <SearchText :values="editedItem.company" @choose-value="chooseResult" name="公司"
+                                        <SearchText :values.sync="editedItem.company" name="公司"
                                                     type="company"></SearchText>
                                     </v-flex>
                                     <v-flex md4 sm6 xs12>
-                                        <SearchText :values="editedItem.position" @choose-value="chooseResult" name="职位"
+                                        <SearchText :values.sync="editedItem.position" name="职位"
                                                     type="position"></SearchText>
                                     </v-flex>
                                     <v-flex md4 sm6 xs12>
-                                        <SearchText :values="editedItem.industry" @choose-value="chooseResult" name="行业"
+                                        <SearchText :values.sync="editedItem.industry" name="行业"
                                                     type="industry"></SearchText>
                                     </v-flex>
 
                                     <!-- 个人信息 -->
                                     <v-flex md2 sm6 xs12>
-                                        <SearchText :values="editedItem.location" @choose-value="chooseResult" name="地区"
+                                        <SearchText :values.sync="editedItem.location" name="地区"
                                                     type="location"></SearchText>
                                     </v-flex>
                                     <v-flex md2 sm6 xs12>
@@ -105,11 +104,11 @@
                                         ></v-select>
                                     </v-flex>
                                     <v-flex md3 sm6 xs12>
-                                        <SearchText :values="editedItem.birthday" @choose-value="chooseResult" name="生日"
+                                        <SearchText :values.sync="editedItem.birthday" name="生日"
                                                     type="birthday"></SearchText>
                                     </v-flex>
                                     <v-flex md2 sm6 xs12>
-                                        <SearchText :values="editedItem.hometown" @choose-value="chooseResult" name="家乡"
+                                        <SearchText :values.sync="editedItem.hometown" name="家乡"
                                                     type="hometown"></SearchText>
                                     </v-flex>
                                     <v-flex md3 sm6 xs12>
@@ -263,10 +262,6 @@
         },
 
         methods: {
-            chooseResult: function (type, value) {
-                eval('this.editedItem.' + type + "='" + value + "'");
-            },
-
             selectToDict(select) {
                 let dict = {0: '未知'};
                 for (let key in select) {
