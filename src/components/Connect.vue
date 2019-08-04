@@ -77,7 +77,8 @@
                             </v-flex>
                             <v-flex md3 sm6 xs12></v-flex>
                             <v-flex md3 sm6 xs12>
-                                <SearchText @choose-value="chooseFriend" name="朋友" type="name"></SearchText>
+                                <SearchText :values="editedItem.friends" @choose-value="chooseFriend" name="朋友"
+                                            type="name"></SearchText>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 <v-chip-group column>
