@@ -187,9 +187,7 @@
         },
         computed: {
             sides: function () {
-                return this.connects.map(function (value, index) {
-                    return index % 2 === 0;
-                })
+                return this.connects.map((value, index) => index % 2 === 0)
             },
             colors: function () {
                 return this.connects.map(function (value, index) {
@@ -284,7 +282,7 @@
                     this.connects.splice(index, 1)
                 }
             },
-            addConnects: function (connect) {
+            addConnects(connect) {
                 let pos = 0;
                 for (let key in this.connects) {
                     if (connect.startDate < this.connects[key].startDate) {
