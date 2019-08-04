@@ -33,7 +33,9 @@
         },
         watch: {
             values: function (val) {
-                this.content = val;
+                if (this.type !== 'name') {
+                    this.content = val;
+                }
             }
         },
         computed: {
@@ -79,11 +81,11 @@
                 let item = this.suggestKeywords[index];
                 if (this.type === 'name') {
                     this.content = '';
+                    this.$emit('choose-value', this.type, item);
                 } else {
                     this.content = item;
+                    this.$emit('update:values', item);
                 }
-                this.$emit('update:values', item);
-                this.$emit('choose-value', this.type, item);
             },
         }
     }

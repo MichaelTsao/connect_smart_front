@@ -77,18 +77,17 @@
                             </v-flex>
                             <v-flex md3 sm6 xs12></v-flex>
                             <v-flex md3 sm6 xs12>
-                                <SearchText :values="editedItem.friends" @choose-value="chooseFriend" name="朋友"
-                                            type="name"></SearchText>
+                                <SearchText @choose-value="chooseFriend" name="朋友" type="name"></SearchText>
                             </v-flex>
                             <v-flex md12 sm12 xs12>
                                 <v-chip-group column>
                                     <v-chip
+                                            v-for="(item, index) in editedItem.friends"
                                             :key="index"
                                             @click:close="removeFriend(index)"
                                             close
                                             color="indigo"
                                             text-color="white"
-                                            v-for="(item, index) in editedItem.friends"
                                     >
                                         <v-avatar>
                                             <v-icon>mdi-account-circle</v-icon>
@@ -111,8 +110,8 @@
 
         <v-timeline :dense="$vuetify.breakpoint.smAndDown">
             <v-timeline-item
-                    :key="index"
                     v-for="(item, index) in connects"
+                    :key="index"
                     :color="colors[index] + ' lighten-1'"
                     :left="sides[index]"
                     :right="!sides[index]"
@@ -128,7 +127,7 @@
                         <v-icon
                                 class="mr-4"
                                 dark
-                                size="42"
+                                size="38"
                         >
                             mdi-magnify
                         </v-icon>
@@ -136,15 +135,16 @@
                     </v-card-title>
                     <v-container>
                         <v-layout>
-                            <v-flex md10 xs12>
-                                {{item.friends.join(" ")}}
+                            <v-flex md10 style="font-size: 1.5em" xs12>
+                                {{ item.friends.map((i) => {return i.name;}).join(' ') }}
                             </v-flex>
                             <v-flex
                                     hidden-sm-and-down
                                     md2
                                     text-right
                             >
-                                <v-icon size="64">mdi-calendar-text</v-icon>
+                                <v-icon @click="editItem(item)" size="34">mdi-pencil</v-icon>
+                                <v-icon @click="deleteItem(item)" size="34">mdi-delete</v-icon>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -196,7 +196,7 @@
                     let colors = ['purple', 'red', 'blue', 'teal', 'lime', 'yellow', 'orange', 'brown'];
                     return colors[index % colors.length];
                 })
-            }
+            },
         },
         methods: {
             removeFriend: function (index) {
@@ -229,10 +229,16 @@
             },
             save() {
                 let that = this;
+                let saveItem = Object.assign({}, this.editedItem);
+                saveItem.friends = saveItem.friends.map((i) => {
+                    return i._id
+                });
+
                 if (this.editedIndex > -1) {
                     Object.assign(this.connects[this.editedIndex], this.editedItem);
 
-                    this.$http.put(process.env.VUE_APP_API_URL + '/connects/' + this.connects[this.editedIndex]['_id'] + '?access-token=100-token', this.editedItem)
+                    this.$http.put(process.env.VUE_APP_API_URL + '/connects/' + this.connects[this.editedIndex]['_id']
+                        + '?access-token=100-token', saveItem)
                         .then(function (response) {
                             // handle success
                             console.log(response);
@@ -243,10 +249,10 @@
                         });
 
                 } else {
-                    this.$http.post(process.env.VUE_APP_API_URL + '/connects?access-token=100-token', this.editedItem)
+                    this.$http.post(process.env.VUE_APP_API_URL + '/connects?access-token=100-token', saveItem)
                         .then(function (response) {
                             // handle success
-                            that.connects.push(response.data);
+                            that.addConnects(response.data);
 
                             console.log(response);
                         })
@@ -256,7 +262,39 @@
                         });
                 }
                 this.close()
-            }
+            },
+            editItem(item) {
+                this.editedIndex = this.connects.indexOf(item);
+                this.editedItem = Object.assign({}, item);
+                this.dialog = true
+            },
+            deleteItem(item) {
+                const index = this.connects.indexOf(item);
+                if (confirm('确定删除此好友?')) {
+                    this.$http.delete(process.env.VUE_APP_API_URL + '/connects/' + this.connects[index]['_id'] + '?access-token=100-token')
+                        .then(function (response) {
+                            // handle success
+                            console.log(response);
+                        })
+                        .catch(function (error) {
+                            // handle error
+                            console.log(error);
+                        });
+
+                    this.connects.splice(index, 1)
+                }
+            },
+            addConnects: function (connect) {
+                let pos = 0;
+                for (let key in this.connects) {
+                    if (connect.startDate < this.connects[key].startDate) {
+                        pos++;
+                    } else {
+                        break;
+                    }
+                }
+                this.connects.splice(pos, 0, connect);
+            },
         },
     }
 </script>
