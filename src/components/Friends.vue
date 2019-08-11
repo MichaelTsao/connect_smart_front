@@ -117,6 +117,12 @@
                                                 v-model="editedItem.phone"
                                         ></v-text-field>
                                     </v-flex>
+                                    <v-flex md3 sm6 xs12>
+                                        <v-text-field
+                                                label="资源"
+                                                v-model="editedItem.feature"
+                                        ></v-text-field>
+                                    </v-flex>
 
                                 </v-layout>
                             </v-container>
@@ -210,7 +216,8 @@
                 phone: '',
                 birthday: '',
                 hometown: '',
-                relation: ''
+                relation: '',
+                feature: ''
             },
             defaultItem: {
                 name: '',
@@ -225,7 +232,8 @@
                 phone: '',
                 birthday: '',
                 hometown: '',
-                relation: ''
+                relation: '',
+                feature: ''
             },
             searchName: '',
             searchRelation: '',
