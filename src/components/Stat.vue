@@ -38,6 +38,7 @@
                 {name: '行业', type: 'industry'},
                 {name: '性别', type: 'gender'},
                 {name: '地区', type: 'location'},
+                {name: '资源', type: 'feature'},
             ],
         }),
 
