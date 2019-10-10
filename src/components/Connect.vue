@@ -206,7 +206,7 @@
             getItems() {
                 let that = this;
 
-                let url = process.env.VUE_APP_API_URL + '/connects?access-token=100-token';
+                let url = process.env.VUE_APP_API_URL + '/connects?access-token=100-token&per-page=100';
                 this.$http.get(url)
                     .then(function (response) {
                         // handle success
